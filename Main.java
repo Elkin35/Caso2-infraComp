@@ -1,9 +1,12 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.InputMismatchException;
 import java.util.Scanner;
-
 
 public class Main {
 
-    
     public static void main(String[] args) {
 
         Main main = new Main();
@@ -45,6 +48,19 @@ public class Main {
                     System.out.println("Ingrese el nombre del archivo");
                     nombreArchivo = scanner.next();
 
+                    File archivo = new File(nombreArchivo);
+                    try {
+                        FileReader fr = new FileReader(archivo);
+                        BufferedReader bf = new BufferedReader(fr);
+
+                        Memoria memoria = new Memoria(numMarcos, bf);
+
+                        memoria.ejecutarMemoria();
+
+                    } catch (FileNotFoundException e) {
+                        System.out.println("No se encontró el archivo\n");
+                    }
+
                 } else if (opcion == 3) {
                     scanner.close();
                     System.exit(0);
@@ -52,7 +68,9 @@ public class Main {
                     System.out.println("Opción no válida");
                 }
 
-            } catch (Exception e) {
+            } catch (InputMismatchException e) {
+                System.out.println("Debe ingresar un número");
+            } catch (NumberFormatException e) {
                 System.out.println("Debe ingresar un número");
             }
 
@@ -61,9 +79,9 @@ public class Main {
     }
 
     private void imprimirMenu() {
-        System.out.println("1. Generación de referencias");
+        System.out.println("\n1. Generación de referencias");
         System.out.println("2. Calcular datos: Número de fallas de página, porcentaje de hits, tiempos");
-        System.out.println("3. Salir");
+        System.out.println("3. Salir\n");
     }
 
 }
