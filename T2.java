@@ -18,9 +18,8 @@ public class T2 extends Thread {
         while (!Memoria.finEjecucionT1) {
             try {
                 Thread.sleep(4); // Moved outside of synchronized block
-                synchronized (Lock.lock) {
-                    tablaDePaginas.actualizarPaginas();
-                }
+                tablaDePaginas.actualizarPaginas();
+                
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

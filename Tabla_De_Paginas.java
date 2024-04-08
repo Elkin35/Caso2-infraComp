@@ -113,29 +113,6 @@ public class Tabla_De_Paginas {
         retorno[1] = getMarco(paginaReemplazo.getId());
 
         return retorno;
-
-        // Integer[] categorias = getCategorias();
-        // Object[] keysObj = tabla.keySet().toArray();
-        // Integer[] keys = new Integer[keysObj.length];
-
-        // for (int i = 0; i < keysObj.length; i++) {
-        //     keys[i] = (Integer) keysObj[i];
-        // }
-
-        // int min = Integer.MAX_VALUE;
-        // int minPagina = 0;
-        // for (Integer pagina : keys) {
-        //     if (categorias[pagina] == 0 && getMarco(pagina) != -1) {
-        //         return new Integer[]{pagina, getMarco(pagina)};
-        //     } else {
-        //         if (categorias[pagina] < min && getMarco(pagina) != -1) {
-
-        //             min = categorias[pagina];
-        //             minPagina = pagina;
-        //         }
-        //     }
-        // }
-        // return new Integer[]{minPagina, getMarco(minPagina)}; // La primera posicion es la pagina a remover y la segunda es el marco
     }
 
     public synchronized void actualizarPaginas() {

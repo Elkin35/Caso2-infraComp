@@ -32,7 +32,6 @@ public class T1 extends Thread {
     public void agregarMarco() {
 
         while (repeticiones > 0) {
-            synchronized (Lock.lock) {
             
 
             // Se actualiza la tabla de paginas y la memoria fisica
@@ -111,7 +110,7 @@ public class T1 extends Thread {
             // }
 
             repeticiones--;
-            }
+            
             try {
                 Thread.sleep(1);
             } catch (InterruptedException e) {
