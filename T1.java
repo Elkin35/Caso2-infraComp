@@ -63,6 +63,7 @@ public class T1 extends Thread {
 
                             if (operacion.equals("W")) {
                                 tablaDePaginas.getPagina(pagina).setBitDeModificado(1);
+                                tablaDePaginas.getPagina(pagina).setBitDeReferenciado(1);
                             } else {
                                 tablaDePaginas.getPagina(pagina).setBitDeReferenciado(1);
                             }
@@ -79,6 +80,7 @@ public class T1 extends Thread {
 
                             if (operacion.equals("W")) {
                                 tablaDePaginas.getPagina(pagina).setBitDeModificado(1);
+                                tablaDePaginas.getPagina(pagina).setBitDeReferenciado(1);
                             } else {
                                 tablaDePaginas.getPagina(pagina).setBitDeReferenciado(1);
                             }
@@ -92,6 +94,7 @@ public class T1 extends Thread {
 
                         if (operacion.equals("W")) {
                             tablaDePaginas.getPagina(pagina).setBitDeModificado(1);
+                            tablaDePaginas.getPagina(pagina).setBitDeReferenciado(1);
                         } else {
                             tablaDePaginas.getPagina(pagina).setBitDeReferenciado(1);
                         }
