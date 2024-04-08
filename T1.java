@@ -34,8 +34,7 @@ public class T1 extends Thread {
         while (repeticiones > 0) {
             
 
-            // Se actualiza la tabla de paginas y la memoria fisica
-            // for (int i = 0; i < nR; i++) {
+            synchronized (Lock.lock) {
                 String linea;
                 try {
                     linea = bf.readLine();
@@ -107,9 +106,9 @@ public class T1 extends Thread {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            // }
 
             repeticiones--;
+            }
             
             try {
                 Thread.sleep(1);
