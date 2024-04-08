@@ -1,5 +1,6 @@
 
 import java.util.HashMap;
+import java.util.List;
 
 
 public class Tabla_De_Paginas {
@@ -10,10 +11,13 @@ public class Tabla_De_Paginas {
     HashMap<Integer, Pagina> idPaginas;
     HashMap<Integer, Integer> categorias = new HashMap<>();
 
-    public Tabla_De_Paginas(int tamanioTabla, int tamanioPagina) {
+    MemoriaFisica memoriaFisica;
+
+    public Tabla_De_Paginas(int tamanioTabla, int tamanioPagina, MemoriaFisica memoriaFisica) {
         this.tamanioTabla = tamanioTabla;
         tabla = new HashMap<>(tamanioTabla);
         idPaginas = new HashMap<>(tamanioTabla);
+        this.memoriaFisica = memoriaFisica;
 
         // Se llena la tabla de paginas vacias
         for (int i = 0; i < tamanioTabla; i++) {
@@ -87,28 +91,57 @@ public class Tabla_De_Paginas {
 
     public Integer[] getPaginaARemover() {
         updateCategorias();
+
         Integer[] categorias = getCategorias();
-        Object[] keysObj = tabla.keySet().toArray();
-        Integer[] keys = new Integer[keysObj.length];
+        Marco[] marcos = memoriaFisica.getMarcos();
 
-        for (int i = 0; i < keysObj.length; i++) {
-            keys[i] = (Integer) keysObj[i];
+        // List<Pagina> ordenDeLlegada = tablaDePagina.obtenerOrdenDeLlegada();
+        Pagina paginaReemplazo = null;
+        
+        for (Marco marco : marcos) {
+            Pagina pagina = idPaginas.get(marco.getPaginaAlmacenada());
+            if (paginaReemplazo == null) {
+                paginaReemplazo = pagina;
+            } else if (pagina.getCategoria() < paginaReemplazo.getCategoria()) {
+                paginaReemplazo = pagina;
+            } 
         }
 
-        int min = Integer.MAX_VALUE;
-        int minPagina = 0;
-        for (Integer pagina : keys) {
-            if (categorias[pagina] == 0 && getMarco(pagina) != -1) {
-                return new Integer[]{pagina, getMarco(pagina)};
-            } else {
-                if (categorias[pagina] < min && getMarco(pagina) != -1) {
+        Integer[] retorno = new Integer[2];
 
-                    min = categorias[pagina];
-                    minPagina = pagina;
-                }
-            }
+        retorno[0] = paginaReemplazo.getId();
+        retorno[1] = getMarco(paginaReemplazo.getId());
+
+        return retorno;
+
+        // Integer[] categorias = getCategorias();
+        // Object[] keysObj = tabla.keySet().toArray();
+        // Integer[] keys = new Integer[keysObj.length];
+
+        // for (int i = 0; i < keysObj.length; i++) {
+        //     keys[i] = (Integer) keysObj[i];
+        // }
+
+        // int min = Integer.MAX_VALUE;
+        // int minPagina = 0;
+        // for (Integer pagina : keys) {
+        //     if (categorias[pagina] == 0 && getMarco(pagina) != -1) {
+        //         return new Integer[]{pagina, getMarco(pagina)};
+        //     } else {
+        //         if (categorias[pagina] < min && getMarco(pagina) != -1) {
+
+        //             min = categorias[pagina];
+        //             minPagina = pagina;
+        //         }
+        //     }
+        // }
+        // return new Integer[]{minPagina, getMarco(minPagina)}; // La primera posicion es la pagina a remover y la segunda es el marco
+    }
+
+    public synchronized void actualizarPaginas() {
+        for (int i = 0; i < tamanioTabla; i++) {
+            idPaginas.get(i).setBitDeReferenciado(0);
         }
-        return new Integer[]{minPagina, getMarco(minPagina)}; // La primera posicion es la pagina a remover y la segunda es el marco
     }
 
     

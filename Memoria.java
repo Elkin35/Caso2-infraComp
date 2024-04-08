@@ -92,7 +92,7 @@ public class Memoria {
         memoriaFisica = new MemoriaFisica(cantidadMarcos, br);
 
         // Inicializamos la tabla de paginas
-        tablaPaginas = new Tabla_De_Paginas(nP, tamanioPagina);
+        tablaPaginas = new Tabla_De_Paginas(nP, tamanioPagina, memoriaFisica);
 
     }
 

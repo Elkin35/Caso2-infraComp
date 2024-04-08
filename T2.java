@@ -29,9 +29,11 @@ public class T2 extends Thread {
     }
 
     public void actualizarPaginas() {
-        for (int i = 0; i < nP; i++) {
-            tablaDePaginas.getPagina(i).setBitDeReferenciado(0);
-        }
+        // for (int i = 0; i < nP; i++) {
+        //     tablaDePaginas.getPagina(i).setBitDeReferenciado(0);
+        // }
+
+        tablaDePaginas.actualizarPaginas();
     }
     
 }
