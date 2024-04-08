@@ -153,8 +153,6 @@ public class Memoria {
         misses = 0;
         tiempo = 0;
         finEjecucionT1 = false;
-
-        System.out.println("Terminé");
     }
 
 }
