@@ -89,7 +89,7 @@ public class Tabla_De_Paginas {
 
 
 
-    public Integer[] getPaginaARemover() {
+    public synchronized Integer[] getPaginaARemover() {
         updateCategorias();
 
         Integer[] categorias = getCategorias();

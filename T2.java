@@ -15,25 +15,16 @@ public class T2 extends Thread {
     }
 
     public void run() {
-
         while (!Memoria.finEjecucionT1) {
             try {
-                Thread.sleep(4);
+                Thread.sleep(4); // Moved outside of synchronized block
+                synchronized (Lock.lock) {
+                    tablaDePaginas.actualizarPaginas();
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            actualizarPaginas();
         }
-
-        // actualizarPaginas();
-    }
-
-    public void actualizarPaginas() {
-        // for (int i = 0; i < nP; i++) {
-        //     tablaDePaginas.getPagina(i).setBitDeReferenciado(0);
-        // }
-
-        tablaDePaginas.actualizarPaginas();
     }
     
 }

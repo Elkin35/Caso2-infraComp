@@ -32,11 +32,8 @@ public class T1 extends Thread {
     public void agregarMarco() {
 
         while (repeticiones > 0) {
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            synchronized (Lock.lock) {
+            
 
             // Se actualiza la tabla de paginas y la memoria fisica
             // for (int i = 0; i < nR; i++) {
@@ -75,6 +72,9 @@ public class T1 extends Thread {
                             int marco = primeraPaginaARemover[1];
 
                             tablaDePaginas.removeMarco(paginaARemover);
+                            tablaDePaginas.getPagina(paginaARemover).setBitDeModificado(0);
+                            tablaDePaginas.getPagina(paginaARemover).setBitDeReferenciado(0);
+
                             tablaDePaginas.putMarco(pagina, marco);
                             memoriaFisica.getMarcos()[marco].setPaginaAlmacenada(pagina);
 
@@ -88,15 +88,19 @@ public class T1 extends Thread {
                         }
 
                     } else {
-
-                        Memoria.hits++;
                         Memoria.tiempo += 0.00003; // 30ns
 
                         if (operacion.equals("W")) {
+                            if (tablaDePaginas.getPagina(pagina).getBitDeModificado() == 0) {
+                                Memoria.misses++;
+                            } else {
+                                Memoria.hits++;
+                            }
                             tablaDePaginas.getPagina(pagina).setBitDeModificado(1);
                             tablaDePaginas.getPagina(pagina).setBitDeReferenciado(1);
                         } else {
                             tablaDePaginas.getPagina(pagina).setBitDeReferenciado(1);
+                            Memoria.hits++;
                         }
 
                     }
@@ -107,9 +111,13 @@ public class T1 extends Thread {
             // }
 
             repeticiones--;
-
+            }
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-
         Memoria.finEjecucionT1 = true;
         
     }
