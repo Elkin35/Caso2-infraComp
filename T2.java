@@ -18,7 +18,7 @@ public class T2 extends Thread {
 
         while (!Memoria.finEjecucionT1) {
             try {
-                Thread.sleep(1);
+                Thread.sleep(4);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -28,7 +28,7 @@ public class T2 extends Thread {
         // actualizarPaginas();
     }
 
-    public synchronized void actualizarPaginas() {
+    public void actualizarPaginas() {
         for (int i = 0; i < nP; i++) {
             tablaDePaginas.getPagina(i).setBitDeReferenciado(0);
         }

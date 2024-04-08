@@ -23,54 +23,54 @@ public class Tabla_De_Paginas {
         }
     }
 
-    public Pagina getPagina(int id) { // Retorna la pagina con el id
+    public synchronized Pagina getPagina(int id) { // Retorna la pagina con el id
         return idPaginas.get(id);
     }
 
-    public void putMarco(int pagina, int marco) { // Se guarda la pagina en el marco
+    public synchronized void putMarco(int pagina, int marco) { // Se guarda la pagina en el marco
         tabla.put(pagina, marco);
     }
 
-    public int getMarco(int pagina) { // Retorna el marco en el que se encuentra la pagina
+    public synchronized int getMarco(int pagina) { // Retorna el marco en el que se encuentra la pagina
         return tabla.get(pagina);
     }
 
-    public void removeMarco(int pagina) { // Se elimina la pagina de la tabla colocandola en -1
+    public synchronized void removeMarco(int pagina) { // Se elimina la pagina de la tabla colocandola en -1
         tabla.put(pagina, -1);
     }
 
-    public int getTamanioTabla() {
+    public synchronized int getTamanioTabla() {
         return tamanioTabla;
     }
 
-    public void setTamanioTabla(int tamanioTabla) {
+    public synchronized void setTamanioTabla(int tamanioTabla) {
         this.tamanioTabla = tamanioTabla;
     }
 
-    public HashMap<Integer, Integer> getTabla() {
+    public synchronized HashMap<Integer, Integer> getTabla() {
         return tabla;
     }
 
-    public void setTabla(HashMap<Integer, Integer> tabla) {
+    public synchronized void setTabla(HashMap<Integer, Integer> tabla) {
         this.tabla = tabla;
     }
 
-    public HashMap<Integer, Pagina> getIdPaginas() {
+    public synchronized HashMap<Integer, Pagina> getIdPaginas() {
         return idPaginas;
     }
 
-    public void setIdPaginas(HashMap<Integer, Pagina> idPaginas) {
+    public synchronized void setIdPaginas(HashMap<Integer, Pagina> idPaginas) {
         this.idPaginas = idPaginas;
     }
 
 
-    public void updateCategorias() {
+    public synchronized void updateCategorias() {
         for (int i = 0; i < tamanioTabla; i++) {
             categorias.put(i, idPaginas.get(i).getCategoria());
         }
     }
 
-    public Integer[] getCategorias() {
+    public synchronized Integer[] getCategorias() {
         updateCategorias();
         Object[] categoriasObj = categorias.values().toArray();
 

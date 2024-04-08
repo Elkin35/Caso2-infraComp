@@ -29,7 +29,7 @@ public class T1 extends Thread {
         agregarMarco();
     }
 
-    public synchronized void agregarMarco() {
+    public void agregarMarco() {
 
         while (repeticiones > 0) {
             try {
