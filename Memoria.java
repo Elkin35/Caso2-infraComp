@@ -34,6 +34,8 @@ public class Memoria {
     public static int hits;
     public static int misses;
     public static double tiempo; // En ms
+    public static double tiempoHits; // En ms
+    public static double tiempoMisses; // En ms
 
     public static boolean finEjecucionT1 = false;
 
@@ -144,6 +146,8 @@ public class Memoria {
         System.out.println("Hits: " + hits);
         System.out.println("Misses: " + misses);
         System.out.println("Tiempo: " + tiempo);
+        System.out.println("Tiempo hits: " + tiempoHits);
+        System.out.println("Tiempo misses: " + tiempoMisses);
         System.out.println("Porcentaje de hits: " + (hits / (double) (hits + misses)) * 100 + "%");
 
         tamanioPagina = 0;
@@ -152,6 +156,8 @@ public class Memoria {
         hits = 0;
         misses = 0;
         tiempo = 0;
+        tiempoHits = 0;
+        tiempoMisses = 0;
         finEjecucionT1 = false;
     }
 

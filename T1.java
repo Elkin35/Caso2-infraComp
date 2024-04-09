@@ -22,6 +22,8 @@ public class T1 extends Thread {
         this.bf = bf;
         this.nR = nR;
 
+        
+
         repeticiones = nR;
     }
 
@@ -48,6 +50,7 @@ public class T1 extends Thread {
 
                         Memoria.misses++;
                         Memoria.tiempo += 10; // 10ms
+                        Memoria.tiempoMisses += 10; // 10ms
 
                         if( memoriaFisica.getMarcosDisponibles() > 0) {
 
@@ -86,7 +89,8 @@ public class T1 extends Thread {
                         }
 
                     } else {
-                        Memoria.tiempo += 0.00003; // 30ns
+                        Memoria.tiempo += 0.000003; // 30ns
+                        Memoria.tiempoHits += 0.000003; // 30ns
 
                         if (operacion.equals("W")) {
                             if (tablaDePaginas.getPagina(pagina).getBitDeModificado() == 0) {
