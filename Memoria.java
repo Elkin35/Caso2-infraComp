@@ -1,18 +1,37 @@
 
+import java.io.BufferedReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Memoria {
+
+    private MemoriaFisica memoriaFisica;
+    private Tabla_De_Paginas tablaPaginas;
 
     public static int tamanioPagina;
     public static int nF;
     public static int nC;
 
-    public static Pagina[] ram;
-    public static Pagina[] swap;
+    private int nR;
+    private int nP;
+    private int nF_NC_Filtro;
 
-    public static Tabla_De_Paginas tabla;
+    private int cantidadMarcos;
+    private BufferedReader br;
 
+    Map<Integer, String> tablaDePaginas = new HashMap<>();
+    
     private String referencias;
+
+    public static int hits;
+    public static int misses;
+    public static double tiempo; // En ms
+    public static double tiempoHits; // En ms
+    public static double tiempoMisses; // En ms
+
+    public static boolean finEjecucionT1 = false;
 
     public Memoria(int tamanioPagina, int nF, int nC) {
         Memoria.tamanioPagina = tamanioPagina;
@@ -20,38 +39,75 @@ public class Memoria {
         Memoria.nC = nC;
     }
 
-
-    public void inicializarMemoria() {
-        ram = new Pagina[nF * nC];
-        swap = new Pagina[nF * nC];
-
-        for (int i = 0; i < nF*nC; i++) {
-            ram[i] = new Pagina(i, 0, 0, tamanioPagina);
-            swap[i] = new Pagina(i, 0, 0, tamanioPagina);
-        }
-
+    public Memoria(int cantidadMarcos, BufferedReader br) {
+        this.cantidadMarcos = cantidadMarcos;
+        this.br = br;
+        inicializarMemoria();
     }
 
+    public void inicializarMemoria() {
+
+        // Ahora se obtienen los datos TP, NF, NC, NF_NC_Filtro, NR y NP de el archivo
+        // br, sabiendo que cada uno de estos datos son enteros despues de un =
+        for (int i = 0; i < 6; i++) {
+
+            String[] linea;
+
+            try {
+                linea = br.readLine().split("=");
+                int valor = Integer.parseInt(linea[1]);
+
+                switch (i) {
+                    case 0:
+                        tamanioPagina = valor;
+                    case 1:
+                        nF = valor;
+                        break;
+                    case 2:
+                        nC = valor;
+                        break;
+                    case 3:
+                        nF_NC_Filtro = valor;
+                    case 4:
+                        nR = valor;
+                    case 5:
+                        nP = valor;
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        // Inicializamos la memoria fisica (ram) con marcos vacios
+        memoriaFisica = new MemoriaFisica(cantidadMarcos);
+
+        // Inicializamos la tabla de paginas
+        tablaPaginas = new Tabla_De_Paginas(nP, tamanioPagina, memoriaFisica);
+
+    }
 
     public void generarReferencias() {
         referencias = "";
 
-        int numReferencias = ((nF-1)-1)*((nC-1)-1)*3*3*2 + ((nF-1)-1)*((nC-1)-1) + nC*2 + ((nF-1)-1)*2;
-        int numPag = (int) Math.ceil((9+(nF*nC)+(nF*nC))*4 / (double) tamanioPagina);
-        
-        referencias += "TP="+tamanioPagina+"\n";
-        referencias += "NF="+nF+"\n";
-        referencias += "NC="+nC+"\n";
+        int numReferencias = ((nF - 1) - 1) * ((nC - 1) - 1) * 3 * 3 * 2 + ((nF - 1) - 1) * ((nC - 1) - 1) + nC * 2
+                + ((nF - 1) - 1) * 2;
+        int numPag = (int) Math.ceil((9 + (nF * nC) + (nF * nC)) * 4 / (double) tamanioPagina);
+
+        referencias += "TP=" + tamanioPagina + "\n";
+        referencias += "NF=" + nF + "\n";
+        referencias += "NC=" + nC + "\n";
         referencias += "NF_NC_Filtro=3\n";
-        referencias += "NR="+numReferencias+"\n";
-        referencias += "NP="+numPag+"\n";
+        referencias += "NR=" + numReferencias + "\n";
+        referencias += "NP=" + numPag + "\n";
 
         Proceso proceso = new Proceso();
 
         referencias += proceso.ejecutarProceso();
 
         // System.out.println(referencias);
-        
+
         try {
             FileWriter w = new FileWriter("referencias.txt");
             w.write(referencias);
@@ -62,5 +118,40 @@ public class Memoria {
         }
 
     }
-    
+
+    public void ejecutarMemoria() {
+        Thread t1 = new T1(tablaPaginas, memoriaFisica, br, nR);
+        Thread t2 = new T2(tablaPaginas, nP);
+
+        t1.start();
+        t2.start();
+
+        try {
+            t1.join();
+            t2.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Hits: " + hits);
+        System.out.println("Misses: " + misses);
+
+        System.out.println("\n-------Tiempos-------");
+
+        System.out.println("Tiempo: " + tiempo);
+        System.out.println("Tiempo hits: " + tiempoHits);
+        System.out.println("Tiempo misses: " + tiempoMisses);
+        System.out.println("Porcentaje de hits: " + (hits / (double) (hits + misses)) * 100 + "%");
+
+        tamanioPagina = 0;
+        nF = 0;
+        nC = 0;
+        hits = 0;
+        misses = 0;
+        tiempo = 0;
+        tiempoHits = 0;
+        tiempoMisses = 0;
+        finEjecucionT1 = false;
+    }
+
 }
