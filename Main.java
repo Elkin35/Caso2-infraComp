@@ -35,7 +35,6 @@ public class Main {
                     nC = scanner.nextInt();
 
                     Memoria memoria = new Memoria(tamanioPagina, nF, nC);
-
                     memoria.generarReferencias();
 
                 } else if (opcion == 2) {

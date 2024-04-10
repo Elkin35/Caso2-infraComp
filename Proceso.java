@@ -1,4 +1,3 @@
-
 public class Proceso {
 
     private int nf;

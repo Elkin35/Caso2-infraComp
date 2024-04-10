@@ -1,7 +1,5 @@
 
 import java.util.HashMap;
-import java.util.List;
-
 
 public class Tabla_De_Paginas {
 
@@ -92,10 +90,8 @@ public class Tabla_De_Paginas {
     public synchronized Integer[] getPaginaARemover() {
         updateCategorias();
 
-        Integer[] categorias = getCategorias();
         Marco[] marcos = memoriaFisica.getMarcos();
 
-        // List<Pagina> ordenDeLlegada = tablaDePagina.obtenerOrdenDeLlegada();
         Pagina paginaReemplazo = null;
         
         for (Marco marco : marcos) {

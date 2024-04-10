@@ -34,7 +34,6 @@ public class T1 extends Thread {
     public void agregarMarco() {
 
         while (repeticiones > 0) {
-            
 
             synchronized (Lock.lock) {
                 String linea;

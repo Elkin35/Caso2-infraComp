@@ -2,11 +2,8 @@
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 public class Memoria {
 
@@ -22,11 +19,8 @@ public class Memoria {
     private int nF_NC_Filtro;
 
     private int cantidadMarcos;
-    private int marcosDisponibles;
     private BufferedReader br;
-    private BufferedReader brSimulacion;
 
-    private Map<Integer, String> ram = new HashMap<>();
     Map<Integer, String> tablaDePaginas = new HashMap<>();
     
     private String referencias;
@@ -48,10 +42,6 @@ public class Memoria {
     public Memoria(int cantidadMarcos, BufferedReader br) {
         this.cantidadMarcos = cantidadMarcos;
         this.br = br;
-        this.brSimulacion = br;
-
-        this.marcosDisponibles = cantidadMarcos;
-
         inicializarMemoria();
     }
 
@@ -91,7 +81,7 @@ public class Memoria {
         }
 
         // Inicializamos la memoria fisica (ram) con marcos vacios
-        memoriaFisica = new MemoriaFisica(cantidadMarcos, br);
+        memoriaFisica = new MemoriaFisica(cantidadMarcos);
 
         // Inicializamos la tabla de paginas
         tablaPaginas = new Tabla_De_Paginas(nP, tamanioPagina, memoriaFisica);
@@ -145,6 +135,9 @@ public class Memoria {
 
         System.out.println("Hits: " + hits);
         System.out.println("Misses: " + misses);
+
+        System.out.println("\n-------Tiempos-------");
+
         System.out.println("Tiempo: " + tiempo);
         System.out.println("Tiempo hits: " + tiempoHits);
         System.out.println("Tiempo misses: " + tiempoMisses);

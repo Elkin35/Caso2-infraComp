@@ -1,18 +1,15 @@
-import java.io.BufferedReader;
 
 public class MemoriaFisica {
 
     private int numMarcos;
-    private BufferedReader bf;
 
     private Marco[] marcos;
 
     private int marcosDisponibles;
     
 
-    public MemoriaFisica(int numMarcos, BufferedReader bf) {
+    public MemoriaFisica(int numMarcos) {
         this.numMarcos = numMarcos;
-        this.bf = bf;
 
         marcos = new Marco[numMarcos];
 
@@ -45,16 +42,6 @@ public class MemoriaFisica {
 
     public void setNumMarcos(int numMarcos) {
         this.numMarcos = numMarcos;
-    }
-
-
-    public BufferedReader getBf() {
-        return bf;
-    }
-
-
-    public void setBf(BufferedReader bf) {
-        this.bf = bf;
     }
 
 
